@@ -13,9 +13,9 @@ export default async function handler(req, res) {
     }
 
     const forwarded = req.headers['x-forwarded-for'];
-    const ip = forwarded ? forwarded.split(',')[0].trim() : req.socket.remoteAddress;
+    const ip = forwarded ? forwarded.split(',')[0].trim() : req.socket?.remoteAddress || '8.8.8.8';
 
-    const geo = geoip.lookup(ip) || geoip.lookup('8.8.8.8'); // fallback
+    const geo = geoip.lookup(ip) || geoip.lookup('8.8.8.8'); // fallback to Google DNS
     if (!geo || !geo.country) {
       console.warn('🟡 Could not determine country for IP:', ip);
       return res.status(400).json({ error: 'Could not determine country from IP' });
@@ -23,13 +23,31 @@ export default async function handler(req, res) {
 
     const country = geo.country;
     const key = `visits:${country}`;
-
     await redis.incr(key);
+
     console.log(`✅ Visit logged for ${country} (${ip})`);
 
+    const redirectURL = req.query.redirect;
+
+    if (redirectURL && isValidUrl(redirectURL)) {
+      return res.writeHead(302, { Location: redirectURL }).end();
+    }
+
+    // Fallback JSON response if no redirect param is provided
     res.status(200).json({ message: `Visit from ${country} logged.` });
+
   } catch (err) {
     console.error('❌ Error in logVisit:', err);
     res.status(500).json({ error: 'Failed to log visit' });
+  }
+}
+
+// Optional: Basic URL validation to prevent open redirect vulnerabilities
+function isValidUrl(url) {
+  try {
+    const parsed = new URL(url);
+    return ['http:', 'https:'].includes(parsed.protocol);
+  } catch (_) {
+    return false;
   }
 }
