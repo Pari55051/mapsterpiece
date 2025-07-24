@@ -14,7 +14,7 @@
 [![Add yourself to map](https://img.shields.io/badge/Get%20Added%20on%20the%20Map-Click%20Here-2c9e13?style=for-the-badge&labelColor=1089d1)](https://mapsterpiece.vercel.app/api/logVisit?redirect=https://github.com/pari55051)
 
 <!-- STATS -->
-![Weekly Stats](https://img.shields.io/badge/Weekly%20Visitors-This%20week:%20**1**%20new%20visit%20from%20**1**%20country.-blue?style=for-the-badge&labelColor=222)
+![Weekly Stats](https://img.shields.io/badge/Weekly%20Visitors-This%20week:%201%20new%20visit%20from%201%20country.-blue?style=for-the-badge&labelColor=222)
 <!-- /STATS -->
 
 ---
