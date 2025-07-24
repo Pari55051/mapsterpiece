@@ -17,9 +17,9 @@ jobs:
         run: |
           curl -s https://mapsterpiece.vercel.app/api/weeklySummary > summary.json
 
-      - name: Update README with badge
+      - name:  Update README with badge
         run: |
-          STATS=$(jq -r '.message' summary.json | sed 's/ /%20/g')
+          STATS=$(jq -r '.message' summary.json | sed 's/\*\*//g' | sed 's/ /%20/g')
           echo "Badge text: $STATS"
           BADGE="![Weekly Stats](https://img.shields.io/badge/Weekly%20Visitors-${STATS}-blue?style=for-the-badge&labelColor=222)"
           sed -i '/<!-- STATS -->/,/<!-- \/STATS -->/c\<!-- STATS -->\n'"$BADGE"'\n<!-- /STATS -->' README.md
