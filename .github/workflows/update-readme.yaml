@@ -13,14 +13,16 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: 📡 Fetch weekly stats
+      - name: Fetch weekly stats
         run: |
           curl -s https://mapsterpiece.vercel.app/api/weeklySummary > summary.json
 
-      - name: Update README
+      - name: Update README with badge
         run: |
-          STATS=$(jq -r '.message' summary.json)
-          sed -i '/<!-- STATS -->/,/<!-- \/STATS -->/c\<!-- STATS -->\n'"$STATS"'\n<!-- /STATS -->' README.md
+          STATS=$(jq -r '.message' summary.json | sed 's/ /%20/g')
+          echo "Badge text: $STATS"
+          BADGE="![Weekly Stats](https://img.shields.io/badge/Weekly%20Visitors-${STATS}-blue?style=for-the-badge&labelColor=222)"
+          sed -i '/<!-- STATS -->/,/<!-- \/STATS -->/c\<!-- STATS -->\n'"$BADGE"'\n<!-- /STATS -->' README.md
 
       - name: Commit & Push (if changes)
         env:
