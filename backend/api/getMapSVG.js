@@ -20,10 +20,14 @@ export default async function handler(req, res) {
     const $ = load(svgRaw, { xmlMode: true });
 
     // Determine theme
+    // const theme = req.query.theme === 'dark' ? 'dark' : 'light';
+    // const backgroundColor = theme === 'dark' ? '#171e29ff' : '#fefefe';
+    // const defaultFill = theme === 'dark' ? '#3d3d3dff' : '#cdcdcdff';
+    // const defaultStroke = theme === 'dark' ? '#3d3d3dff' : '#cdcdcdff';
     const theme = req.query.theme === 'dark' ? 'dark' : 'light';
-    const backgroundColor = theme === 'dark' ? '#171e29ff' : '#fefefe';
-    const defaultFill = theme === 'dark' ? '#3d3d3dff' : '#cdcdcdff';
-    const defaultStroke = theme === 'dark' ? '#3d3d3dff' : '#cdcdcdff';
+    const backgroundColor = theme === 'dark' ? '#0d1117' : '#ffffff';
+    const defaultFill = theme === 'dark' ? '#2b2f33' : '#e5e5e5';
+    const defaultStroke = theme === 'dark' ? '#444c56' : '#d1d1d1';
 
     $('svg').attr('style', `background-color: ${backgroundColor};`);
 
@@ -98,8 +102,8 @@ export default async function handler(req, res) {
 }
 
 // Color generator: unique HSL based on country code
-function getColorFromCode(code) {
+function getBrightColorFromCode(code) {
   const hash = [...code].reduce((acc, c) => acc + c.charCodeAt(0), 0);
-  const hue = (hash * 37) % 360;
-  return `hsl(${hue}, 70%, 55%)`;
+  const hue = (hash * 47) % 360;
+  return `hsl(${hue}, 90%, 60%)`; // Bright, saturated, readable colors
 }
