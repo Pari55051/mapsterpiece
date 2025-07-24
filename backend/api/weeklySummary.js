@@ -9,17 +9,26 @@ function getWeekKey(countryCode, week) {
   return `week:${week}:visits:${countryCode}`;
 }
 
-function getCurrentWeekNumber() {
+// function getCurrentWeekNumber() {
+//   const now = new Date();
+//   const firstJan = new Date(now.getFullYear(), 0, 1);
+//   const days = Math.floor((now - firstJan) / (24 * 60 * 60 * 1000));
+//   return Math.ceil((now.getDay() + 1 + days) / 7);
+// }
+function getPreviousWeekNumber() {
   const now = new Date();
   const firstJan = new Date(now.getFullYear(), 0, 1);
   const days = Math.floor((now - firstJan) / (24 * 60 * 60 * 1000));
-  return Math.ceil((now.getDay() + 1 + days) / 7);
+  return Math.max(Math.ceil((now.getDay() + 1 + days) / 7) - 1, 1); // Prevent going below week 1
 }
 
 export default async function handler(req, res) {
   try {
-    const currentWeek = getCurrentWeekNumber();
-    const keys = await redis.keys(`week:${currentWeek}:visits:*`);
+    // const currentWeek = getCurrentWeekNumber();
+    // const keys = await redis.keys(`week:${currentWeek}:visits:*`);
+    const previousWeek = getPreviousWeekNumber();
+    const keys = await redis.keys(`week:${previousWeek}:visits:*`);
+
     let totalVisits = 0;
     const countries = new Set();
 
