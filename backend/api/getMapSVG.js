@@ -22,8 +22,8 @@ export default async function handler(req, res) {
     // Determine theme
     const theme = req.query.theme === 'dark' ? 'dark' : 'light';
     const backgroundColor = theme === 'dark' ? '#171e29ff' : '#fefefe';
-    const defaultFill = theme === 'dark' ? '#616161ff' : '#cdcdcdff';
-    const defaultStroke = theme === 'dark' ? '#616161ff' : '#cdcdcdff';
+    const defaultFill = theme === 'dark' ? '#3d3d3dff' : '#cdcdcdff';
+    const defaultStroke = theme === 'dark' ? '#3d3d3dff' : '#cdcdcdff';
 
     $('svg').attr('style', `background-color: ${backgroundColor};`);
 
