@@ -11,18 +11,26 @@ a github readme add-on  to display geo info of visits on your profile. -->
 
 ---
 
-## Embed in your GitHub Profile
 
-Add the following snippet to your `README.md` to display your live visit map:
+## Want Your Own Map?
 
-```md
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://mapsterpiece.vercel.app/api/getMapSVG?theme=dark">
-  <source media="(prefers-color-scheme: light)" srcset="https://mapsterpiece.vercel.app/api/getMapSVG?theme=light">
-  <img alt="World Map of Visitors" src="https://mapsterpiece.vercel.app/api/getMapSVG?theme=light">
-</picture>
-````
+1. **Fork this repo**
+2. **Create a free Redis DB** at [upstash.com](https://upstash.com)
+3. **Copy your Redis URL and token**
+4. **Add these in your `.env` or Vercel Dashboard**:
+    - KV_REST_API_URL=your_url
+    - KV_REST_API_TOKEN=your_token
+5. **Deploy with Vercel** 
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/your-username/mapsterpiece)
+6. Add the following snippet to your `README.md` to display your live visit map:
 
+    ```md
+    <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://mapsterpiece.vercel.app/api/getMapSVG?theme=dark">
+    <source media="(prefers-color-scheme: light)" srcset="https://mapsterpiece.vercel.app/api/getMapSVG?theme=light">
+    <img alt="World Map of Visitors" src="https://mapsterpiece.vercel.app/api/getMapSVG?theme=light">
+    </picture>
+    ````
 ---
 
 ## API Endpoints
