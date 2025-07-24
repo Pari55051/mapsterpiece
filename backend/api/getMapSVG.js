@@ -106,6 +106,20 @@ export default async function handler(req, res) {
 // Color generator: unique HSL based on country code
 function getColorFromCode(code) {
   const hash = [...code].reduce((acc, c) => acc + c.charCodeAt(0), 0);
-  const hue = (hash * 47) % 360;
-  return `hsl(${hue}, 90%, 60%)`;
+
+  // Avoid hue ranges that may look gray, white, or black.
+  // Hues like ~0–20 (dull red), ~40–70 (muddy yellow), ~180–220 (bluish gray) are avoided.
+  const allowedHueRanges = [
+    [20, 40],   // warm orange
+    [70, 150],  // greens
+    [220, 300], // purples and pinks
+    [300, 360]  // red-pinks
+  ];
+
+  // Choose one of the ranges based on the hash
+  const range = allowedHueRanges[hash % allowedHueRanges.length];
+  const hue = range[0] + (hash % (range[1] - range[0]));
+
+  // Fixed saturation and lightness for vibrancy
+  return `hsl(${hue}, 85%, 55%)`;
 }
