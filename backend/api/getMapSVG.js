@@ -71,7 +71,9 @@ export default async function handler(req, res) {
 
       if (el.length > 0) {
         const fillColor = getColorFromCode(countryCode);
-        const opacity = Math.min(count / maxCount, 1).toFixed(2);
+        const rawOpacity = count / maxCount;
+        const opacity = Math.max(Math.min(rawOpacity, 1), 0.4).toFixed(2); // min opacity = 0.4
+
         let style = `fill: ${fillColor}; fill-opacity: ${opacity}; stroke: ${defaultStroke}; stroke-width: 0.4;`;
 
         if (countryId === highlightCountry) {
