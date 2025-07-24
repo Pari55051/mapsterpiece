@@ -8,9 +8,7 @@ a github readme add-on  to display geo info of visits on your profile. -->
 
 ![Mapsterpiece Demo](https://mapsterpiece.vercel.app/api/getMapSVG?theme=dark)
 
-
 ---
-
 
 ## Want Your Own Map?
 
@@ -30,6 +28,8 @@ a github readme add-on  to display geo info of visits on your profile. -->
     <source media="(prefers-color-scheme: light)" srcset="https://mapsterpiece.vercel.app/api/getMapSVG?theme=light">
     <img alt="World Map of Visitors" src="https://mapsterpiece.vercel.app/api/getMapSVG?theme=light">
     </picture>
+
+    [![Add yourself to map](https://img.shields.io/badge/Get%20Added%20on%20the%20Map-Click%20Here-2c9e13?style=for-the-badge&labelColor=1089d1)](https://mapsterpiece.vercel.app/api/logVisit)
     ````
 ---
 
