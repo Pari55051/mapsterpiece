@@ -6,36 +6,35 @@ const redis = new Redis({
 });
 
 export default async function handler(req, res) {
-  // Optional: simple security check using secret query parameter
   const secret = req.query.secret;
   if (process.env.ADMIN_SECRET && secret !== process.env.ADMIN_SECRET) {
     return res.status(401).json({ error: 'Unauthorized: Invalid secret' });
   }
 
   try {
-    // Collect visit and summary keys
-    const visitKeys = await redis.keys('visits:*');
-    const weeklyKeys = await redis.keys('weekly:*'); // adjust prefix if needed
-    const allKeys = [...visitKeys, ...weeklyKeys];
+    // Match general and weekly visit keys
+    const generalKeys = await redis.keys('visits:*');
+    const weeklyKeys = await redis.keys('week:*:visits:*');
+    const allKeys = [...generalKeys, ...weeklyKeys];
 
     for (const key of allKeys) {
       await redis.del(key);
-      console.log(`Deleted key: ${key}`);
+      console.log(`🧹 Deleted key: ${key}`);
     }
 
     res.status(200).send(`
       <html>
         <body style="font-family: sans-serif; background: #f8f9fa; padding: 2rem;">
-          <h2>🧹 Redis Data Cleared</h2>
-          <p><strong>${allKeys.length}</strong> keys were deleted:</p>
-          <ul>
-            ${allKeys.map(key => `<li>${key}</li>`).join('')}
-          </ul>
+          <h2>✅ All Visit Data Cleared</h2>
+          <p><strong>${allKeys.length}</strong> keys were deleted.</p>
+          <details style="margin-top:1rem;"><summary>See deleted keys</summary>
+            <ul>${allKeys.map(k => `<li>${k}</li>`).join('')}</ul>
+          </details>
         </body>
       </html>
     `);
   } catch (err) {
-    console.error('Error clearing data:', err);
+    console.error('❌ Error clearing data:', err);
     res.status(500).send('Failed to clear data.');
   }
 }
