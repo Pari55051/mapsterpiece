@@ -1,5 +1,4 @@
-
-name: 🛠 Update Weekly Stats in README
+name: Update Weekly Stats in README
 
 on:
   schedule:
@@ -11,24 +10,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📥 Checkout repo
+      - name: Checkout repo
         uses: actions/checkout@v3
 
       - name: 📡 Fetch weekly stats
         run: |
           curl -s https://mapsterpiece.vercel.app/api/weeklySummary > summary.json
 
-      - name: 📝 Update README
+      - name: Update README
         run: |
           STATS=$(jq -r '.message' summary.json)
-          echo "Fetched: $STATS"
-          sed -i.bak '/<!-- STATS -->/,/<!-- \/STATS -->/c\<!-- STATS -->\n'"$STATS"'\n<!-- /STATS -->' README.md
-          rm README.md.bak
+          sed -i '/<!-- STATS -->/,/<!-- \/STATS -->/c\<!-- STATS -->\n'"$STATS"'\n<!-- /STATS -->' README.md
 
-      - name: ✅ Commit & Push
+      - name: Commit & Push (if changes)
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add README.md
-          git commit -m "🔄 Weekly update of visitor stats" || echo "No changes to commit"
-          git push
+          
+          if ! git diff --cached --quiet; then
+            git commit -m "🔄 Weekly update of visitor stats"
+            git push
+          else
+            echo " No changes to commit."
+          fi
