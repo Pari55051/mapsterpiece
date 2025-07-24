@@ -74,7 +74,7 @@ export default async function handler(req, res) {
         // const rawOpacity = count / maxCount;
         // const opacity = Math.max(Math.min(rawOpacity, 1), 0.4).toFixed(2); // min opacity = 0.4
         const rawOpacity = count / maxCount;
-        const opacity = Math.max(Math.min(rawOpacity, 1), 0.35).toFixed(2);
+        const opacity = Math.max(Math.min(rawOpacity, 1), 0.5).toFixed(2);
 
 
         let style = `fill: ${fillColor}; fill-opacity: ${opacity}; stroke: ${defaultStroke}; stroke-width: 0.4;`;
