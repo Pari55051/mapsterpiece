@@ -1,7 +1,7 @@
 {
   "name": "mapsterpiece",
   "version": "1.0.0",
-  "description": "a github readme add-on  to display geo info of visits on your profile.",
+  "description": "a github readme add-on to display geo info of visits on your profile.",
   "main": "index.js",
   "scripts": {
     "seed": "node scripts/seedVisits.js",

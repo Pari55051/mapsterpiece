@@ -1,4 +1,4 @@
-// scripts/validateMap.js
+
 import fs from 'fs';
 import path from 'path';
 import cheerio from 'cheerio';
@@ -25,7 +25,7 @@ Object.keys(visits).forEach(code => {
 });
 
 if (missing.length) {
-  console.log('⚠️ Missing country codes in SVG:', missing);
+  console.log(' Missing country codes in SVG:', missing);
 } else {
-  console.log('✅ All country codes in visits.json exist in the SVG.');
+  console.log(' All country codes in visits.json exist in the SVG.');
 }

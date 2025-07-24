@@ -14,12 +14,12 @@ export default async function handler(req, res) {
       throw new Error('Missing Redis environment variables');
     }
 
-    // Load SVG
+    // load SVG
     const svgPath = path.resolve(process.cwd(), 'public/world.svg');
     const svgRaw = fs.readFileSync(svgPath, 'utf-8');
     const $ = load(svgRaw, { xmlMode: true });
 
-    // Determine theme
+    // theme
     // const theme = req.query.theme === 'dark' ? 'dark' : 'light';
     // const backgroundColor = theme === 'dark' ? '#171e29ff' : '#fefefe';
     // const defaultFill = theme === 'dark' ? '#3d3d3dff' : '#cdcdcdff';
@@ -43,19 +43,19 @@ export default async function handler(req, res) {
 
     const highlightCountry = (req.query.highlight || '').toLowerCase();
 
-    // Fetch all country visit counts from Redis
+    // Fetch all country visit counts from redis db
     const keys = await redis.keys('visits:*');
     const visits = {};
 
     for (const key of keys) {
-      const countryCode = key.split(':')[1]; // e.g. 'visits:US'
+      const countryCode = key.split(':')[1]; 
       const count = await redis.get(key);
       visits[countryCode] = parseInt(count || 0, 10);
     }
 
-    const maxCount = Math.max(...Object.values(visits), 1); // Avoid divide-by-zero
+    const maxCount = Math.max(...Object.values(visits), 1);
 
-    // First: Apply base style to all countries for visibility
+    // apply base style for visibility
     $('path, g').each((_, el) => {
       const $el = $(el);
       if (!$el.attr('style')) {
@@ -63,7 +63,7 @@ export default async function handler(req, res) {
       }
     });
 
-    // Then: Color and annotate visited countries
+    // color visited countries
     for (const [countryCode, count] of Object.entries(visits)) {
       const countryId = countryCode.toLowerCase();
       let el = $(`g[id="${countryId}"]`);
@@ -101,16 +101,16 @@ export default async function handler(req, res) {
     res.status(200).send($.xml());
 
   } catch (error) {
-    console.error('❌ Error generating SVG map:', error);
+    console.error('Error generating SVG map:', error);
     res.status(500).json({ error: 'Failed to generate SVG map' });
   }
 }
 
-// Color generator: unique HSL based on country code
+// generate color for highlighting visited countries
 function getColorFromCode(code) {
   const hash = [...code].reduce((acc, c) => acc + c.charCodeAt(0), 0);
 
-  // Expanded and safe hue ranges to avoid grays/muted tones
+  // avoiding gray colors
   const allowedHueRanges = [
     [10, 30],   // warm oranges
     [30, 50],   // bright yellows
@@ -123,12 +123,11 @@ function getColorFromCode(code) {
     [330, 360]  // reds
   ];
 
-  // Choose a range based on hash
   const range = allowedHueRanges[hash % allowedHueRanges.length];
   const hue = range[0] + (hash % (range[1] - range[0]));
 
-  const saturation = 85; // vivid
-  const lightness = 50;  // bright, not too pale
+  const saturation = 85;
+  const lightness = 50;  
 
   return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
 }

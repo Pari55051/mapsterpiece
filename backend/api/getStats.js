@@ -22,7 +22,7 @@ export default async function handler(req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.status(200).json({ totalCountries, totalVisits });
   } catch (err) {
-    console.error('❌ Failed to get stats:', err);
+    console.error('Failed to get stats:', err);
     res.status(500).json({ error: 'Failed to fetch stats' });
   }
 }

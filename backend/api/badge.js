@@ -30,7 +30,7 @@ export default async function handler(req, res) {
       message: `${totalCountries} countries • ${totalVisits} visits`,
       color: isDark ? 'yellow' : 'blue',
       labelColor: isDark ? 'black' : 'gray',
-      style: 'flat', // or flat-square, plastic, etc.
+      style: 'flat-square',
       namedLogo: 'world-map',
     });
   } catch (err) {

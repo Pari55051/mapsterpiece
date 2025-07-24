@@ -17,7 +17,7 @@ export default async function handler(req, res) {
 
     const geo = geoip.lookup(ip) || geoip.lookup('8.8.8.8'); // fallback to Google DNS
     if (!geo || !geo.country) {
-      console.warn('🟡 Could not determine country for IP:', ip);
+      console.warn('Could not determine country for IP:', ip);
       return res.status(400).json({ error: 'Could not determine country from IP' });
     }
 
@@ -25,7 +25,7 @@ export default async function handler(req, res) {
     const key = `visits:${country}`;
     await redis.incr(key);
 
-    console.log(`✅ Visit logged for ${country} (${ip})`);
+    console.log(`Visit logged for ${country} (${ip})`);
 
     const redirectURL = req.query.redirect;
 
@@ -37,12 +37,12 @@ export default async function handler(req, res) {
     res.status(200).json({ message: `Visit from ${country} logged.` });
 
   } catch (err) {
-    console.error('❌ Error in logVisit:', err);
+    console.error('Error in logVisit:', err);
     res.status(500).json({ error: 'Failed to log visit' });
   }
 }
 
-// Optional: Basic URL validation to prevent open redirect vulnerabilities
+// url validation
 function isValidUrl(url) {
   try {
     const parsed = new URL(url);
