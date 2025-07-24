@@ -4,39 +4,61 @@ import { load } from 'cheerio';
 
 export default async function handler(req, res) {
   try {
-    // Load the visits JSON
+    // Load visit data
     const visitsPath = path.resolve(process.cwd(), 'backend/storage/visits.json');
-    const visitsRaw = fs.readFileSync(visitsPath, 'utf-8');
-    const visits = JSON.parse(visitsRaw);
+    const visits = JSON.parse(fs.readFileSync(visitsPath, 'utf-8'));
 
-    // Load the SVG map
+    // Load SVG map
     const svgPath = path.resolve(process.cwd(), 'public/world.svg');
     const svgRaw = fs.readFileSync(svgPath, 'utf-8');
+    const $ = load(svgRaw, { xmlMode: true });
 
-    // Parse with Cheerio
-    const $ = load(svgRaw, { xmlMode: true });  // ✅ Correct
+    const theme = req.query.theme === 'dark' ? 'dark' : 'light';
+    const backgroundColor = theme === 'dark' ? '#0D1117' : '#FFFFFF';
 
-    // Color each visited country (your SVG uses <g id="xx">)
+    $('svg').attr('style', `background-color: ${backgroundColor};`);
+
+    const maxCount = Math.max(...Object.values(visits), 1); // Avoid divide-by-zero
+
     for (const [countryCode, count] of Object.entries(visits)) {
-      const countryId = countryCode.toLowerCase(); // match lowercase IDs like "us"
+      const countryId = countryCode.toLowerCase();
       let el = $(`g[id="${countryId}"]`);
 
-      // fallback for <path id="xx"> if needed
       if (el.length === 0) {
         el = $(`path[id="${countryId}"]`);
       }
 
       if (el.length > 0) {
-        // Apply a basic fill style (can customize)
-        el.attr('style', 'fill: #007acc; fill-opacity: 0.7;');
+        // Generate unique color
+        const fillColor = getColorFromCode(countryCode);
+        const opacity = Math.min(count / maxCount, 1).toFixed(2);
+
+        // Style with dynamic opacity
+        el.attr('style', `fill: ${fillColor}; fill-opacity: ${opacity};`);
+
+        // Add visit count tooltip
+        el.find('title').remove();
+        el.append(`<title>${countryCode}: ${count} visit${count !== 1 ? 's' : ''}</title>`);
+
+        // Highlight countries with milestones
+        if (count >= 10) {
+          el.attr('stroke', '#000');
+          el.attr('stroke-width', count >= 50 ? '0.6' : '0.3');
+        }
       }
     }
 
-    // Return updated SVG
     res.setHeader('Content-Type', 'image/svg+xml');
     res.status(200).send($.xml());
   } catch (error) {
     console.error('💥 Error generating SVG map:', error);
     res.status(500).json({ error: 'Failed to generate SVG map' });
   }
+}
+
+// Generate a visually distinct color from country code
+function getColorFromCode(code) {
+  const hash = [...code].reduce((acc, c) => acc + c.charCodeAt(0), 0);
+  const hue = (hash * 37) % 360;
+  return `hsl(${hue}, 70%, 55%)`;
 }
