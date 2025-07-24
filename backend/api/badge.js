@@ -7,6 +7,8 @@ const redis = new Redis({
 
 export default async function handler(req, res) {
   try {
+    const theme = req.query.theme === 'dark' ? 'dark' : 'light';
+
     const keys = await redis.keys('visits:*');
     const visits = {};
 
@@ -19,10 +21,25 @@ export default async function handler(req, res) {
     const totalVisits = Object.values(visits).reduce((a, b) => a + b, 0);
     const totalCountries = Object.keys(visits).length;
 
+    const isDark = theme === 'dark';
+
     res.setHeader('Content-Type', 'application/json');
-    res.status(200).json({ totalCountries, totalVisits });
+    res.status(200).json({
+      schemaVersion: 1,
+      label: 'Mapsterpiece',
+      message: `${totalCountries} countries • ${totalVisits} visits`,
+      color: isDark ? 'yellow' : 'blue',
+      labelColor: isDark ? 'black' : 'gray',
+      style: 'flat', // or flat-square, plastic, etc.
+      namedLogo: 'world-map',
+    });
   } catch (err) {
-    console.error('❌ Failed to get stats:', err);
-    res.status(500).json({ error: 'Failed to fetch stats' });
+    console.error(err);
+    res.status(500).json({
+      schemaVersion: 1,
+      label: 'Mapsterpiece',
+      message: 'error',
+      color: 'red',
+    });
   }
 }
