@@ -107,19 +107,27 @@ export default async function handler(req, res) {
 function getColorFromCode(code) {
   const hash = [...code].reduce((acc, c) => acc + c.charCodeAt(0), 0);
 
-  // Avoid hue ranges that may look gray, white, or black.
-  // Hues like ~0–20 (dull red), ~40–70 (muddy yellow), ~180–220 (bluish gray) are avoided.
-  const allowedHueRanges = [
-    [20, 40],   // warm orange
-    [70, 150],  // greens
-    [220, 300], // purples and pinks
-    [300, 360]  // red-pinks
+  // Generate 60+ hue values excluding muddy/grayscale areas
+  const excludedHueZones = [
+    [0, 5],     // near red-black
+    [20, 25],   // brownish
+    [40, 50],   // dirty yellows
+    [75, 85],   // muddy green
+    [110, 130], // gray-green
+    [200, 210], // desaturated cyan
+    [240, 250], // dark blue-gray
+    [0, 0]      // placeholder
   ];
 
-  // Choose one of the ranges based on the hash
-  const range = allowedHueRanges[hash % allowedHueRanges.length];
-  const hue = range[0] + (hash % (range[1] - range[0]));
+  const validHues = [];
+  for (let i = 0; i < 360; i += 6) {
+    const inExcluded = excludedHueZones.some(([start, end]) => i >= start && i <= end);
+    if (!inExcluded) validHues.push(i);
+  }
 
-  // Fixed saturation and lightness for vibrancy
-  return `hsl(${hue}, 85%, 55%)`;
+  const hue = validHues[hash % validHues.length];
+  const saturation = 90; // highly vivid
+  const lightness = 55;  // bright and visible on both dark/light bg
+
+  return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
 }
