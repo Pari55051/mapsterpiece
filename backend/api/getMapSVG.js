@@ -102,8 +102,8 @@ export default async function handler(req, res) {
 }
 
 // Color generator: unique HSL based on country code
-function getBrightColorFromCode(code) {
+function getColorFromCode(code) {
   const hash = [...code].reduce((acc, c) => acc + c.charCodeAt(0), 0);
   const hue = (hash * 47) % 360;
-  return `hsl(${hue}, 90%, 60%)`; // Bright, saturated, readable colors
+  return `hsl(${hue}, 90%, 60%)`;
 }
