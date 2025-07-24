@@ -14,7 +14,7 @@
 [![Add yourself to map](https://img.shields.io/badge/Get%20Added%20on%20the%20Map-Click%20Here-2c9e13?style=for-the-badge&labelColor=1089d1)](https://mapsterpiece.vercel.app/api/logVisit?redirect=https://github.com/pari55051)
 
 <!-- STATS -->
-Waiting for stats to update...
+This week: **1** new visit from **1** country.
 <!-- /STATS -->
 
 ---
