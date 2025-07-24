@@ -41,7 +41,7 @@ export default async function handler(req, res) {
       }
     }
 
-    const message = `This week: **${totalVisits}** new visit${totalVisits !== 1 ? 's' : ''} from **${countries.size}** countr${countries.size === 1 ? 'y' : 'ies'}.`;
+    const message = `Last week: **${totalVisits}** new visit${totalVisits !== 1 ? 's' : ''} from **${countries.size}** countr${countries.size === 1 ? 'y' : 'ies'}.`;
 
     res.setHeader('Content-Type', 'application/json');
     res.status(200).json({
@@ -50,7 +50,7 @@ export default async function handler(req, res) {
       message,
     });
   } catch (error) {
-    console.error('❌ Failed to get weekly summary:', error);
+    console.error(' Failed to get weekly summary:', error);
     res.status(500).json({ error: 'Could not fetch weekly stats' });
   }
 }

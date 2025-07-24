@@ -19,7 +19,7 @@
 
 ---
 
-## Want Your Own Map?
+## Usage
 
 1. Fork this repo
 2. Create a free Redis DB at [upstash.com](https://upstash.com) or directly create it from inside vercel marketplace
@@ -43,7 +43,12 @@
     [![Map Stats](https://img.shields.io/endpoint?url=https://YOUR_DEPLOYED_URL/api/badge&style=for-the-badge&labelColor=1e1e1e&color=3ba55c)](https://YOUR_DEPLOYED_URL/api/getMapSVG?theme=light)
     
     [![Add yourself to map](https://img.shields.io/badge/Get%20Added%20on%20the%20Map-Click%20Here-2c9e13?style=for-the-badge&labelColor=1089d1)](https://YOUR_DEPLOYED_URL/api/logVisit?redirect=https://github.com/YOUR_USERNAME)
+
+    <!-- STATS -->
+    <!-- /STATS -->
     ````
+7. give 'read and write' permission to github actions on your repo to run the "update Weekly stats" workflow
+8. run the workflow manually once after logging yourself via the 'add yourself to map' to test the build
 ---
 
 ## API Endpoints
@@ -53,6 +58,8 @@
 | `/api/logVisit`               | Logs user's country visit      |
 | `/api/getMapSVG?theme=dark` / `/api/getMapSVG?theme=light`  | Renders dark-mode/light-mode SVG map      |
 | `/api/badge` | Get Map Stat Badge |
+| `/api/weeklySummary` | Get weekly summary data |
+| `/api/clearData` | Clears all saved data from the vercel database |
 
 ---
 
