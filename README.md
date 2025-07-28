@@ -14,7 +14,7 @@
 [![Add yourself to map](https://img.shields.io/badge/Get%20Added%20on%20the%20Map-Click%20Here-2c9e13?style=for-the-badge&labelColor=1089d1)](https://mapsterpiece.vercel.app/api/logVisit?redirect=https://github.com/pari55051)
 
 <!-- STATS -->
-![Weekly Stats](https://img.shields.io/badge/Weekly%20Visitors-This%20week:%201%20new%20visit%20from%201%20country.-blue?style=for-the-badge&labelColor=222)
+![Weekly Stats](https://img.shields.io/badge/Weekly%20Visitors-Last%20week:%200%20new%20visits%20from%200%20countries.-blue?style=for-the-badge&labelColor=222)
 <!-- /STATS -->
 
 ---
@@ -44,8 +44,9 @@
     
     [![Add yourself to map](https://img.shields.io/badge/Get%20Added%20on%20the%20Map-Click%20Here-2c9e13?style=for-the-badge&labelColor=1089d1)](https://YOUR_DEPLOYED_URL/api/logVisit?redirect=https://github.com/YOUR_USERNAME)
 
-    <!-- STATS -->
-    <!-- /STATS -->
+<!-- STATS -->
+![Weekly Stats](https://img.shields.io/badge/Weekly%20Visitors-Last%20week:%200%20new%20visits%20from%200%20countries.-blue?style=for-the-badge&labelColor=222)
+<!-- /STATS -->
     ````
 7. give 'read and write' permission to github actions on your repo to run the "update Weekly stats" workflow
 8. run the workflow manually once after logging yourself via the 'add yourself to map' to test the build
